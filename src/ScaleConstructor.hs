@@ -6,7 +6,7 @@ import Euterpea
 -- Type Aliases
 type ChordType = String -- "M", "m", "a", "d"
 
--- ##################### Generate Scales from Steps and Key #####################
+-- Generate Scales from Steps and Key
 createMajScale :: Music a -> [Music a]
 createMajScale root = map (`transpose` root) majScaleSteps
   where
@@ -27,31 +27,3 @@ createRandomScale root = map (`transpose` root) randomSteps
   where
     -- TODO: Figure out some way to do some random stuff here?!
     randomSteps = [0, 2 .. 20]
-
--- ------------------------ Examples ------------------------
-playBMinScale :: IO ()
-playBMinScale = do
-  play $
-    melody :+: harmony
-  where
-    melody = line $ createMinScale (b 2 qn)
-    harmony = chord $ minTriadSet (b 2 qn)
-
-playDMinScaleArp :: IO ()
-playDMinScaleArp = do
-  play $
-    melUp :+: melDown
-  where
-    melUp = line $ createMinScale (b 2 qn)
-    melDown = line $ reverse $ createMinScale (b 2 qn)
-
-playDMinScaleArpWithRes :: IO ()
-playDMinScaleArpWithRes = do
-  play $
-    melUp :+: melDown :+: lowFive :+: tonic
-  where
-    root = b 3
-    tonic = chord . minTriadSet $ root wn
-    lowFive = chord . majTriadSet $ fs 2 hn
-    melUp = line . createMinScale $ root qn
-    melDown = line . reverse . createMinScale $ root qn

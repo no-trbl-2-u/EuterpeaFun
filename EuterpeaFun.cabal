@@ -21,3 +21,4 @@ executable EuterpeaFun
                      , Euterpea
   other-modules:       ChordConstructor
                      , ScaleConstructor
+                     , Examples
