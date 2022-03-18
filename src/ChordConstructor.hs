@@ -60,20 +60,39 @@ augTriadSet = createTriadSet "a"
 dimTriadSet :: Music a -> [Music a]
 dimTriadSet = createTriadSet "d"
 
+invertTriadSet :: String -> [Music a] -> [Music a]
+invertTriadSet invType noteSet =
+  case invType of
+    "fst" -> tail noteSet ++ [transpose 12 $ head noteSet]
+    "snd" -> [last noteSet] ++ [transpose 12 $ head noteSet] ++ [transpose 12 . head . tail $ noteSet]
+    _ -> noteSet
+
 -- ------------------------ Examples ------------------------
 
 cMajorHarmonyExample :: IO ()
 cMajorHarmonyExample = do
-  play $ melody :=: harmony
+  play $
+    melody :=: harmony
   where
     melody = line $ majTriadSet (c 4 qn)
     harmony = chord $ majTriadSet (c 3 qn)
 
 composedPitchSet :: IO ()
 composedPitchSet = do
-  play $ line pitchSet
+  play $
+    line pitchSet
   where
     pitchSet = majTriadSet (c 4 qn) ++ majTriadSet (d 2 qn)
+
+bMajorInversionsExample :: IO ()
+bMajorInversionsExample = do
+  play $
+    chord root :+: chord fstInversion :+: chord sndInversion :+: chord upperRoot
+  where
+    root = majTriadSet $ b 3 hn
+    fstInversion = invertTriadSet "fst" root
+    sndInversion = invertTriadSet "snd" root
+    upperRoot = majTriadSet $ b 4 hn
 
 -- ##################### Generate Scales from Steps and Key #####################
 -- TODO: Move these to another module!
@@ -87,18 +106,16 @@ createMinScale root = map (`transpose` root) minScaleSteps
   where
     minScaleSteps = [0, 2, 3, 5, 7, 8, 10, 11, 12]
 
+createWholeToneScale :: Music a -> [Music a]
+createWholeToneScale root = map (`transpose` root) wtSteps
+  where
+    wtSteps = [0 .. 12]
+
 createRandomScale :: Music a -> [Music a]
 createRandomScale root = map (`transpose` root) randomSteps
   where
     -- TODO: Figure out some way to do some random stuff here?!
     randomSteps = [0, 2 .. 20]
-
-invertTriadSet :: String -> [Music a] -> [Music a]
-invertTriadSet invType noteSet =
-  case invType of
-    "fst" -> tail noteSet ++ [transpose 12 $ head noteSet]
-    "snd" -> last noteSet : map (transpose 12) (tail $ reverse noteSet)
-    _ -> noteSet
 
 -- ------------------------ Examples ------------------------
 playBMinScale :: IO ()
@@ -127,18 +144,3 @@ playDMinScaleArpWithRes = do
     lowFive = chord . majTriadSet $ fs 2 hn
     melUp = line . createMinScale $ root qn
     melDown = line . reverse . createMinScale $ root qn
-
-playCMajNormalThanInverted :: IO ()
-playCMajNormalThanInverted = do
-  play $
-    chord root :+: cMajFst :+: cMajSnd :+: chord (majTriadSet $ c 4 qn)
-  where
-    root = majTriadSet $ c 3 qn
-    cMajFst = chord $ invertTriadSet "fst" root
-    cMajSnd = chord $ invertTriadSet "snd" root
-
-inverted :: String -> Music Pitch
-inverted t = line $ invertTriadSet t $ majTriadSet (c 4 qn)
-
-normal :: Music Pitch
-normal = line $ majTriadSet (c 4 qn)
