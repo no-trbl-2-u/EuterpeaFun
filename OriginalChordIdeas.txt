@@ -1,5 +1,3 @@
-module OldCodeToLearnFrom where () -- Export Nothing
-
 import Euterpea
 
 -- ########### Old Code to Learn From ###########
