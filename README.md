@@ -24,7 +24,7 @@ Maybe in the future build a stack template that configures Euterpea automaticall
 
 ## TODO Implementation Details
 
-- Move Scale Generator to own module
+~- Move Scale Generator to own module~
 - Move examples to their own modules
 - Figure out best way for Haskell to handle CONSTANTS
 - Convert to selective import/exports
