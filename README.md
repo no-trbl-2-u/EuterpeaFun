@@ -14,14 +14,13 @@ Maybe in the future build a stack template that configures Euterpea automaticall
 
 ## Future plans
 
-- Scale generator (based on steps vs. root)
-- Chord generator (based on steps vs. root)
-- I want "I" or "ii" in C Major to have meaning
+~- Scale generator (based on steps vs. root)~ DONE
+~- Chord generator (based on steps vs. root)~ DONE
+- Chord Set Generator (based on key and diatonic chords in scale)
+- I want "I" or "ii" in "x key" to have meaning
+  - When done with this, begin researching more about "secondary functions" (ie. I/vi being relative and/or which keys I can "resolve" to either resolve or modulate
 
--- AFTER those two are done ... ABSTRACT THEM!! 😂
-I want these generators to create a list of values (without :+: or :=:). This way we can then fold them into a musical idea. This way we can create note-sets for specific areas of a measure/bar and use them for both creating chords and melodies.
-
--- AND AFTER THAT EVEN!! ... I want State ... what bar are we on, what measure, WHAT KEY?!? These values can help provide information on if we should resolve, what chords we could leverage at any given moment to modulate to another KEY, what notes are diatonic, etc.
+-- After all building blocks are done and seem okay, I want rules for generated progressions and melodies ... I want State ... what bar are we on, what measure, WHAT KEY?!? These values can help provide information on if we should resolve, what chords we could leverage at any given moment to modulate to another KEY, what notes are diatonic, etc.
 
 ## TODO Implementation Details
 
