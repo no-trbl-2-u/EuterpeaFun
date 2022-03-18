@@ -28,3 +28,4 @@ I want these generators to create a list of values (without :+: or :=:). This wa
 - Move Scale Generator to own module
 - Move examples to their own modules
 - Figure out best way for Haskell to handle CONSTANTS
+- Convert to selective import/exports
