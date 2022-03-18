@@ -76,7 +76,7 @@ composedPitchSet = do
     pitchSet = majTriadSet (c 4 qn) ++ majTriadSet (d 2 qn)
 
 -- ##################### Generate Scales from Steps and Key #####################
-
+-- TODO: Move these to another module!
 createMajScale :: Music a -> [Music a]
 createMajScale root = map (`transpose` root) majScaleSteps
   where
