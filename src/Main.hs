@@ -2,6 +2,7 @@ module Main where
 
 import ChordConstructor
 import Euterpea
+import ScaleConstructor
 
 -- :=: -- Harmonize
 -- :+: -- Melodize

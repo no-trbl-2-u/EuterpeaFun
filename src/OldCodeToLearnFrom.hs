@@ -1,5 +1,8 @@
+module OldCodeToLearnFrom where () -- Export Nothing
+
 import Euterpea
 
+-- ########### Old Code to Learn From ###########
 createMajorChord :: (Octave -> Dur -> Music Pitch) -> Music Pitch
 createMajorChord root =
   root 4 qn :=: third :=: fifth

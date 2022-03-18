@@ -20,3 +20,4 @@ executable EuterpeaFun
   build-depends:       base >= 8.0 && < 8.2
                      , Euterpea
   other-modules:       ChordConstructor
+                     , ScaleConstructor
