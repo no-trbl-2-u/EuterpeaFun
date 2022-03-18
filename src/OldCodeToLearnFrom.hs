@@ -1,5 +1,3 @@
-module Main where
-
 import Euterpea
 
 createMajorChord :: (Octave -> Dur -> Music Pitch) -> Music Pitch
@@ -22,3 +20,12 @@ createMinorChord root =
   where
     third = transpose 3 root
     fifth = transpose 7 root
+
+-- Before I learned of "line" and "chord"
+foldMusicSet :: ConcatMusicSet a -> [Music a] -> Music a
+foldMusicSet foldFn = foldr foldFn (rest 0)
+
+-- Equivalent
+line', chord' :: [Music a] -> Music a
+line' = foldR (:+:) (rest 0)
+chord' = foldR (:=:) (rest 0)

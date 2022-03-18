@@ -6,6 +6,10 @@
 
 [Euterpea Book](https://www.cs.yale.edu/homes/hudak/Papers/HSoM.pdf)
 
+[Note-Level/MIDI API](https://www.euterpea.com/api/euterpea-api/note-level-api/)
+
+[Signal-Level/Audio API](https://www.euterpea.com/api/euterpea-api/signal-level-api/)
+
 Maybe in the future build a stack template that configures Euterpea automatically.
 
 ## Future plans
