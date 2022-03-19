@@ -43,3 +43,15 @@ addEachPair' = map (\(n, m) -> n + m)
 -- Finished Abstraction
 addEachPair' :: [(Int, Int)] -> [Int]
 addEachPair' = map (uncurry (+))
+
+
+-- Abstraction to handle both min and max and curryable
+makeGetAbsPitch :: String -> PitchSpace -> AbsPitch
+makeGetAbsPitch [] = error "Empty Lists can not be handled"
+makeGetAbsPitch "max" = last . sort
+makeGetAbsPitch "min" = head . sort
+makeGetAbsPitch _ = error "Pass 'min' or 'max' ONLY"
+
+---- Errors come caked into this via the closure
+minPitch = makeGetAbsPitch "min"
+maxPitch = makeGetAbsPitch "max"

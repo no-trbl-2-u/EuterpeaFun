@@ -1,9 +1,21 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
+{-# HLINT ignore "Use maximum" #-}
+-- To recreate maxAbsPitch w/o eta reduction
+
+{-# HLINT ignore "Use minimum" #-}
+-- To recreate minAbsPitch w/o eta reduction
 module Exercises where
+
+import Data.List (sort)
+import Euterpea
 
 -- HSoM pg. 61-63
 
 -- Type Aliases
 type IntTuple = (Int, Int)
+
+type PitchSpace = [AbsPitch]
 
 -- Exercise 3.3 (applyEach creates a list of results of funcN x)
 applyEach :: [a -> b] -> a -> [b]
@@ -31,10 +43,19 @@ addEachPair' = map (uncurry (+))
 
 -- Exercise 3.7 (d. Adds “pointwise” the elements of a list of pairs)
 addPairsPointwise :: [IntTuple] -> IntTuple
-addPairsPointwise = foldr addPointwiseReducer (0, 0)
+addPairsPointwise = foldr reducer (0, 0)
   where
-    addPointwiseReducer :: IntTuple -> IntTuple -> IntTuple
-    addPointwiseReducer (acc0, cur0) (acc1, cur1) = (acc0 + acc1, cur0 + cur1)
+    reducer :: IntTuple -> IntTuple -> IntTuple
+    reducer (a0, c0) (a1, c1) = (a0 + a1, c0 + c1)
+
+-- Exercise 3.8 (Find max AbsPitch in [AbsPitch])
+maxAbsPitch :: PitchSpace -> AbsPitch
+maxAbsPitch [] = error "maxAbsPitch was given an empty array"
+maxAbsPitch xs = last $ sort xs
+
+minAbsPitch :: PitchSpace -> AbsPitch
+minAbsPitch [] = error "minAbsPitch was given an empty array"
+minAbsPitch xs = head $ sort xs
 
 --  -- Example Sets
 fns0 :: [Integer -> Integer]
@@ -54,3 +75,6 @@ nums1 = pairAndOne nums0
 
 nums2 :: [IntTuple]
 nums2 = pairAndOne [1, 2, 3]
+
+ps0 :: PitchSpace
+ps0 = [40 .. 70]
