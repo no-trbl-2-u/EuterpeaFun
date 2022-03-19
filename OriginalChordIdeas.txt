@@ -30,3 +30,16 @@ foldMusicSet foldFn = foldr foldFn (rest 0)
 line', chord' :: [Music a] -> Music a
 line' = foldR (:+:) (rest 0)
 chord' = foldR (:=:) (rest 0)
+
+------------ References from Exercises! ------------
+-- Start
+addEachPair :: [(Int, Int)] -> [Int]
+addEachPair [] = []
+addEachPair ((n, m) : rest) = n + m : addEachPair rest
+
+addEachPair' :: [(Int, Int)] -> [Int]
+addEachPair' = map (\(n, m) -> n + m)
+
+-- Finished Abstraction
+addEachPair' :: [(Int, Int)] -> [Int]
+addEachPair' = map (uncurry (+))
