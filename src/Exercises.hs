@@ -17,6 +17,8 @@ type IntTuple = (Int, Int)
 
 type PitchSpace = [AbsPitch]
 
+type Step = Int
+
 -- Exercise 3.3 (applyEach creates a list of results of funcN x)
 applyEach :: [a -> b] -> a -> [b]
 applyEach fns x = map ($ x) fns
@@ -66,6 +68,19 @@ chrom p0 p1
   where
     buildChrom :: Pitch -> Pitch -> [Music Pitch]
     buildChrom p0 p1 = map (note qn . pitch) [absPitch p0 .. absPitch p1]
+
+-- Exercise 3.10 ()
+---- Define a function such that "mkScale p ints" where [ints :: Step Whole]
+stepsExample :: [Step]
+-- TODO: Maybe remove 0?
+stepsExample = [0, 2, 2, 1, 2, 2, 2, 1]
+
+mkScale :: Pitch -> [Step] -> Music Pitch
+mkScale p0 ints = line $ map (note qn) pitchSet
+  where
+    absRoot = absPitch p0
+    -- TODO: OR remove the 'absRoot :'
+    pitchSet = map pitch (absRoot : map (+ absRoot) ints)
 
 ----------------- Example Sets ------------
 
