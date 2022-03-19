@@ -57,7 +57,21 @@ minAbsPitch :: PitchSpace -> AbsPitch
 minAbsPitch [] = error "minAbsPitch was given an empty array"
 minAbsPitch xs = head $ sort xs
 
---  -- Example Sets
+-- Exercise 3.9 (Create Chromatic scale for [p1 .. p2])
+-- Define a function such that chrom p1 p2 is a chromatic scale of quarter-notes whose first pitch is
+-- p1 and last pitch is p2. If p1 > p2, the scale should be descending, otherwise
+-- it should be ascending. If p1 == p2, then the scale should contain just one
+-- note. (A chromatic scale is one whose successive pitches are separated by
+-- one absolute pitch (i.e. one semitone)).
+
+-- TODO: Add in case or if/else logic
+chrom :: Pitch -> Pitch -> Music Pitch
+chrom p0 p1 = line noteList
+  where
+    noteList = map (note qn . pitch) [absPitch p0 .. absPitch p1]
+
+----------------- Example Sets ------------
+
 fns0 :: [Integer -> Integer]
 fns0 = [(+ 10), (+ 5), (+ 20)]
 
@@ -78,3 +92,9 @@ nums2 = pairAndOne [1, 2, 3]
 
 ps0 :: PitchSpace
 ps0 = [40 .. 70]
+
+p0 :: Pitch
+p0 = (C, 4)
+
+p1 :: Pitch
+p1 = (C, 6)
