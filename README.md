@@ -10,12 +10,15 @@
 
 [Signal-Level/Audio API](https://www.euterpea.com/api/euterpea-api/signal-level-api/)
 
+[Quick Types Reference](https://www.euterpea.com/wp-content/uploads/2016/12/Euterpea_Quick_Reference.pdf)
+
 Maybe in the future build a stack template that configures Euterpea automatically.
 
 ## Future plans
 
 ~- Scale generator (based on steps vs. root)~ DONE
 ~- Chord generator (based on steps vs. root)~ DONE
+
 - Chord Set Generator (based on key and diatonic chords in scale)
 - I want "I" or "ii" in "x key" to have meaning
   - When done with this, begin researching more about "secondary functions" (ie. I/vi being relative and/or which keys I can "resolve" to either resolve or modulate
@@ -25,6 +28,7 @@ Maybe in the future build a stack template that configures Euterpea automaticall
 ## TODO Implementation Details
 
 ~- Move Scale Generator to own module~
+
 - Move examples to their own modules
 - Figure out best way for Haskell to handle CONSTANTS
 - Convert to selective import/exports
