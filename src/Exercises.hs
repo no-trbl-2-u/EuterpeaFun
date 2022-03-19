@@ -1,13 +1,14 @@
 module Exercises where
 
--- Currying exercises
+-- Exercise 3.3
 applyEach :: [a -> b] -> a -> [b]
 applyEach fns x = map ($ x) fns
 
+-- Exercise 3.4
 applyAll :: [a -> a] -> a -> a
 applyAll = foldr (.) id
 
---  -- Examples
+--  -- Example Sets
 fns0 :: [Integer -> Integer]
 fns0 = [(+ 10), (+ 5), (+ 20)]
 
