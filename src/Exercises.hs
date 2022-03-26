@@ -71,16 +71,22 @@ chrom p0 p1
 
 -- Exercise 3.10 ()
 ---- Define a function such that "mkScale p ints" where [ints :: Step Whole]
-stepsExample :: [Step]
--- TODO: Maybe remove 0?
-stepsExample = [0, 2, 2, 1, 2, 2, 2, 1]
+-- stepsExample :: [Step]
+stepsExample = 0 : [2, 2, 1, 2, 2, 2, 1]
 
-mkScale :: Pitch -> [Step] -> Music Pitch
-mkScale p0 ints = line $ map (note qn) pitchSet
+-- stepsReducer acc curr = acc : [acc + curr] -- BROKEN
+-- stepsReducer :: Num a => a -> a -> [a]
+-- stepsReducer :: Num a => a -> a -> [a]
+-- stepsReducer acc curr = (+)
+
+-- tryThisWay xs = foldr (\n m -> n : n + m) 40 xs
+
+-- mkScale :: Pitch -> [Int] -> Music Pitch
+mkScale p0 ints = line $ map (note qn . pitch) pitchSet
   where
-    absRoot = absPitch p0
-    -- TODO: OR remove the 'absRoot :'
-    pitchSet = map pitch (absRoot : map (+ absRoot) ints)
+    root = absPitch p0
+    pitchSet :: [AbsPitch]
+    pitchSet = foldr (:) [40] ints
 
 ----------------- Example Sets ------------
 
