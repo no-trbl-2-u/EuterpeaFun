@@ -2,6 +2,9 @@ module ScaleConstructor where
 
 import ChordConstructor
 import Euterpea
+import Helpers
+import System.Random (Random (randomRs), mkStdGen)
+import System.Random.SplitMix (mkSMGen)
 
 -- Type Aliases
 type ChordType = String -- "M", "m", "a", "d"
@@ -28,5 +31,4 @@ createWholeToneScale root = createScaleFromSteps root wtSteps
 createRandomScale :: Music a -> [Music a]
 createRandomScale root = createScaleFromSteps root randomSteps
   where
-    -- TODO: Figure out some way to do some random stuff here?!
-    randomSteps = [0, 2 .. 20]
+    randomSteps = randomRs (0, 12) (mkSMGen 400)
