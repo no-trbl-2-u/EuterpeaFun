@@ -17,9 +17,9 @@ type DistThresh = AbsPitch
 type Root = AbsPitch
 
 -- Interval Pattern-based Randomization using a PitchSpace
-pGen :: PitchSpace -> [Pattern] -> AbsPitch -> DistThresh -> SMGen -> Pattern
-pGen s k root d g0 =
-  pInst ++ pGen s k (last pInst) d g2
+genFromPattern :: PitchSpace -> [Pattern] -> AbsPitch -> DistThresh -> SMGen -> Pattern
+genFromPattern s k root d g0 =
+  pInst ++ genFromPattern s k (last pInst) d g2
   where
     (p, g1) = choose k g0 -- select a pattern to use, pat
     patts = findInsts s p -- find p's instances in s
@@ -33,8 +33,8 @@ pGen s k root d g0 =
         else choose patts g1 -- no nearby instances available
 
 -- LESS complex randomization, but randomize duration
-pGen2 :: [AbsPitch] -> [Dur] -> Int -> SMGen -> Music (AbsPitch, Volume)
-pGen2 pitches durs thresh g0 =
+randomGen :: [AbsPitch] -> [Dur] -> Int -> SMGen -> Music (AbsPitch, Volume)
+randomGen pitches durs thresh g0 =
   let (p, g1) = choose pitches g0
       (d, g2) = choose durs g1
       (v, g3) = randomR (0, 127) g2
@@ -42,4 +42,4 @@ pGen2 pitches durs thresh g0 =
         if v < thresh
           then rest d
           else note d (p, v)
-   in x :+: pGen2 pitches durs thresh g3
+   in x :+: randomGen pitches durs thresh g3

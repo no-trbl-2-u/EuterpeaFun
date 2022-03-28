@@ -2,9 +2,10 @@ module Examples where
 
 import ChordConstructor
 import Euterpea
+import Exercises (ScaleMode (Ionian', Phrygian'), genScale)
 import Helpers (choose, randomize)
-import PatternGenerator (pGen, pGen2)
-import ScaleConstructor
+import PatternGenerator (genFromPattern, randomGen)
+import ScaleConstructor (createMinScale)
 import System.Random.SplitMix (SMGen, mkSMGen)
 
 -- ------------------------ Triad Progression Examples ------------------------
@@ -79,25 +80,46 @@ playDMinScaleArpWithRes = do
     melDown = line . reverse . createMinScale $ root qn
 
 -- ------------------------ Pattern Generator Examples ------------------------
-cMajorScale, cMajorScaleLess :: [AbsPitch]
-cMajorScale = [40, 42, 44, 45, 47, 49, 51, 52]
+cMajorScale, cMajorScaleLess, cMajorPhrygian, cMajorPhrygianLess :: [AbsPitch]
+cMajorScale = genScale (C, 3) Ionian'
 cMajorScaleLess = [40, 44, 45, 47, 49]
+cMajorPhrygian = genScale (C, 3) Phrygian'
+cMajorPhrygianLess = take 5 $ genScale (C, 3) Phrygian'
 
-patternSet :: [[AbsPitch]]
-patternSet = [[1, 3, 5], [5, 3, 1]]
+patternSet0, patternSet1, patternSet2 :: [[AbsPitch]]
+patternSet0 = [[1, 3, 5], [5, 3, 1]]
+patternSet1 = [[1, 5, 3, 5], [5, 3, 5, 1], [1, 6, 5]]
+patternSet2 = [[1, 5, 3, 5], [7, 5, 7], [1, 8]]
 
--- Play Examples
-playPGen :: IO ()
-playPGen = do
+playGenFromPattern0 :: [[AbsPitch]] -> IO ()
+playGenFromPattern0 patternSet = do
   play $ tempo 1 (instrument Vibraphone melody)
   where
     melody = line $ map (note en) pGenExampleSet
-    pGenExampleSet = pGen pitchSpace patternSet 40 2 (mkSMGen 300)
+    pGenExampleSet = genFromPattern pitchSpace patternSet0 40 2 (mkSMGen 300)
     pitchSpace = cMajorScaleLess ++ map (+ 12) cMajorScaleLess
 
-playPGen2 :: IO ()
-playPGen2 = do
+playGenFromPattern1 :: [[AbsPitch]] -> IO ()
+playGenFromPattern1 patternSet = do
+  play $
+    tempo
+      0.75
+      ( instrument Cello bassline0
+          :=: instrument Violin bassline1
+          :=: instrument Cello melody0
+          :=: instrument Violin melody1
+      )
+  where
+    melody0 = line $ map (note qn . (+ 12)) pGenExampleSet0
+    melody1 = line $ map (note dqn . (+ 24)) pGenExampleSet0
+    bassline0 = line $ map (note dwn) pGenExampleSet1
+    bassline1 = line $ map (note wn . (+ 12)) pGenExampleSet1
+    pGenExampleSet0 = genFromPattern cMajorPhrygian patternSet 30 4 (mkSMGen 300)
+    pGenExampleSet1 = genFromPattern cMajorPhrygian patternSet 20 4 (mkSMGen 300)
+
+playRandomGen :: IO ()
+playRandomGen = do
   play $ tempo 2 (instrument Xylophone melody :=: instrument Vibraphone melody2)
   where
-    melody = pGen2 (map (+ 12) cMajorScaleLess) [hn, wn, hn, qn] 0 (mkSMGen 500)
-    melody2 = pGen2 (map (+ 24) cMajorScale) [qn, sn, qn, en] 0 (mkSMGen 600)
+    melody = randomGen (map (+ 12) cMajorScaleLess) [hn, wn, hn, qn] 0 (mkSMGen 500)
+    melody2 = randomGen (map (+ 24) cMajorScale) [qn, sn, qn, en] 0 (mkSMGen 600)

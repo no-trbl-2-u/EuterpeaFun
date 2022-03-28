@@ -73,13 +73,15 @@ chrom p0 p1
 majorSteps :: [Step]
 majorSteps = [2, 2, 1, 2, 2, 2, 1]
 
-mkScale :: Pitch -> [Step] -> Music Pitch
-mkScale root [] = note qn root
+mkScale :: Pitch -> [Step] -> [AbsPitch]
+mkScale root [] = [absPitch root]
 mkScale root (interval : intervals) =
-  note qn root :+: mkScale (trans interval root) intervals
+  absPitch root : mkScale (trans interval root) intervals
+
+-- note qn root :+: mkScale (trans interval root) intervals
 
 -- Exercise 3.10 (Create a type for each mode)
-data MajorScaleMode
+data ScaleMode
   = Ionian'
   | Dorian'
   | Phrygian'
@@ -88,13 +90,17 @@ data MajorScaleMode
   | Aeolian'
   | Locrian'
 
+majSteps, minSteps :: [AbsPitch]
+majSteps = [2, 2, 1, 2, 2, 2, 1]
+minSteps = [2, 1, 2, 2, 1, 2, 1, 1]
+
 cycleScaleNTimes :: Int -> [AbsPitch]
 cycleScaleNTimes = (iterate cycleScale steps !!)
   where
-    steps = [2, 2, 1, 2, 2, 2, 1]
+    steps = majSteps -- Swap out values here to test different step sets
     cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
 
-genScale :: Pitch -> MajorScaleMode -> Music Pitch
+genScale :: Pitch -> ScaleMode -> [AbsPitch]
 genScale p mode =
   mkScale p (getByMode mode)
   where
