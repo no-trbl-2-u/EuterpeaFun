@@ -69,28 +69,40 @@ chrom p0 p1
     buildChrom :: Pitch -> Pitch -> [Music Pitch]
     buildChrom p0 p1 = map (note qn . pitch) [absPitch p0 .. absPitch p1]
 
--- Exercise 3.10 ()
----- Define a function such that "mkScale p ints" where [ints :: Step Whole]
--- stepsExample :: [Step]
-stepsExample = 0 : [2, 2, 1, 2, 2, 2, 1]
+-- Exercise 3.10 (Creates a scale from root and interval pattern)
+majorSteps :: [Step]
+majorSteps = [2, 2, 1, 2, 2, 2, 1]
 
--- stepsReducer acc curr = acc : [acc + curr] -- BROKEN
--- stepsReducer :: Num a => a -> a -> [a]
--- stepsReducer :: Num a => a -> a -> [a]
--- stepsReducer acc curr = (+)
+mkScale :: Pitch -> [Step] -> Music Pitch
+mkScale root [] = note qn root
+mkScale root (interval : intervals) =
+  note qn root :+: mkScale (trans interval root) intervals
 
--- tryThisWay xs = foldr (\n m -> n : n + m) 40 xs
+-- Exercise 3.10 (Create a type for each mode)
+data MajorScaleMode
+  = Ionian'
+  | Dorian'
+  | Phrygian'
+  | Lydian'
+  | Mixolydian'
+  | Aeolian'
+  | Locrian'
 
--- mkScale :: Pitch -> [Int] -> Music Pitch
-mkScale p0 ints = line $ map (note qn . pitch) pitchSet
+genScale :: Pitch -> MajorScaleMode -> Music Pitch
+genScale p mode =
+  mkScale p (getByMode mode)
   where
-    root = absPitch p0
-    pitchSet :: [AbsPitch]
-    pitchSet = foldr (:) [40] ints
+    getByMode Ionian' = [2, 2, 1, 2, 2, 2, 1]
+    getByMode Dorian' = [2, 1, 2, 2, 2, 1, 2]
+    getByMode Phrygian' = [1, 2, 2, 2, 1, 2, 2]
+    getByMode Lydian' = [2, 2, 2, 1, 2, 2, 1]
+    getByMode Mixolydian' = [2, 2, 1, 2, 2, 1, 2]
+    getByMode Aeolian' = [2, 1, 2, 2, 1, 2, 2]
+    getByMode Locrian' = [1, 2, 2, 1, 2, 2, 2]
 
 ----------------- Example Sets ------------
 
-fns0 :: [Integer -> Integer]
+fns0 :: [Int -> Int]
 fns0 = [(+ 10), (+ 5), (+ 20)]
 
 fns1 :: [String -> String]
