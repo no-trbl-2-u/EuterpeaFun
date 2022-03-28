@@ -2,7 +2,7 @@ module Examples where
 
 import ChordConstructor
 import Euterpea
-import Exercises (ScaleMode (Ionian', Phrygian'), genScale)
+import Exercises
 import Helpers (choose, randomize)
 import PatternGenerator (genFromPattern, randomGen)
 import ScaleConstructor (createMinScale)
@@ -80,16 +80,15 @@ playDMinScaleArpWithRes = do
     melDown = line . reverse . createMinScale $ root qn
 
 -- ------------------------ Pattern Generator Examples ------------------------
-cMajorScale, cMajorScaleLess, cMajorPhrygian, cMajorPhrygianLess :: [AbsPitch]
+cMajorScale, cMajorScaleLess, cMajorPhrygian :: [AbsPitch]
 cMajorScale = genScale (C, 3) Ionian'
 cMajorScaleLess = [40, 44, 45, 47, 49]
 cMajorPhrygian = genScale (C, 3) Phrygian'
-cMajorPhrygianLess = take 5 $ genScale (C, 3) Phrygian'
 
 patternSet0, patternSet1, patternSet2 :: [[AbsPitch]]
-patternSet0 = [[1, 3, 5], [5, 3, 1]]
+patternSet0 = [[1, 3, 5], [5, 3, 1], [1, 3, 7]]
 patternSet1 = [[1, 5, 3, 5], [5, 3, 5, 1], [1, 6, 5]]
-patternSet2 = [[1, 5, 3, 5], [7, 5, 7], [1, 8]]
+patternSet2 = [[1, 5, 3, 5], [7, 5, 7], [5, 8], [8, 7, 1], [1, 8, 7], [8, 5], [7, 3, 7]]
 
 playGenFromPattern0 :: [[AbsPitch]] -> IO ()
 playGenFromPattern0 patternSet = do
@@ -99,11 +98,11 @@ playGenFromPattern0 patternSet = do
     pGenExampleSet = genFromPattern pitchSpace patternSet0 40 2 (mkSMGen 300)
     pitchSpace = cMajorScaleLess ++ map (+ 12) cMajorScaleLess
 
-playGenFromPattern1 :: [[AbsPitch]] -> IO ()
-playGenFromPattern1 patternSet = do
+playGenFromPattern1 :: [[AbsPitch]] -> ScaleMode -> IO ()
+playGenFromPattern1 patternSet mode = do
   play $
     tempo
-      0.75
+      0.50
       ( instrument Cello bassline0
           :=: instrument Violin bassline1
           :=: instrument Cello melody0
@@ -114,8 +113,8 @@ playGenFromPattern1 patternSet = do
     melody1 = line $ map (note dqn . (+ 24)) pGenExampleSet0
     bassline0 = line $ map (note dwn) pGenExampleSet1
     bassline1 = line $ map (note wn . (+ 12)) pGenExampleSet1
-    pGenExampleSet0 = genFromPattern cMajorPhrygian patternSet 30 4 (mkSMGen 300)
-    pGenExampleSet1 = genFromPattern cMajorPhrygian patternSet 20 4 (mkSMGen 300)
+    pGenExampleSet0 = genFromPattern (genScale (C, 3) mode) patternSet 30 4 (mkSMGen 300)
+    pGenExampleSet1 = genFromPattern (genScale (C, 2) mode) patternSet0 30 4 (mkSMGen 400)
 
 playRandomGen :: IO ()
 playRandomGen = do
