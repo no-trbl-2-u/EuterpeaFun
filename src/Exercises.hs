@@ -88,17 +88,23 @@ data MajorScaleMode
   | Aeolian'
   | Locrian'
 
+cycleScaleNTimes :: Int -> [AbsPitch]
+cycleScaleNTimes = (iterate cycleScale steps !!)
+  where
+    steps = [2, 2, 1, 2, 2, 2, 1]
+    cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
+
 genScale :: Pitch -> MajorScaleMode -> Music Pitch
 genScale p mode =
   mkScale p (getByMode mode)
   where
-    getByMode Ionian' = [2, 2, 1, 2, 2, 2, 1]
-    getByMode Dorian' = [2, 1, 2, 2, 2, 1, 2]
-    getByMode Phrygian' = [1, 2, 2, 2, 1, 2, 2]
-    getByMode Lydian' = [2, 2, 2, 1, 2, 2, 1]
-    getByMode Mixolydian' = [2, 2, 1, 2, 2, 1, 2]
-    getByMode Aeolian' = [2, 1, 2, 2, 1, 2, 2]
-    getByMode Locrian' = [1, 2, 2, 1, 2, 2, 2]
+    getByMode Ionian' = cycleScaleNTimes 0
+    getByMode Dorian' = cycleScaleNTimes 1
+    getByMode Phrygian' = cycleScaleNTimes 2
+    getByMode Lydian' = cycleScaleNTimes 3
+    getByMode Mixolydian' = cycleScaleNTimes 4
+    getByMode Aeolian' = cycleScaleNTimes 5
+    getByMode Locrian' = cycleScaleNTimes 6
 
 ----------------- Example Sets ------------
 
