@@ -79,23 +79,21 @@ playDMinScaleArpWithRes = do
     melDown = line . reverse . createMinScale $ root qn
 
 -- ------------------------ Pattern Generator Examples ------------------------
-cMajorScale :: [AbsPitch]
+cMajorScale, cMajorScaleLess :: [AbsPitch]
 cMajorScale = [40, 42, 44, 45, 47, 49, 51, 52]
-
-cMajorScaleLess :: [AbsPitch]
 cMajorScaleLess = [40, 44, 45, 47, 49]
 
 patternSet :: [[AbsPitch]]
-patternSet = [[3, 0], [0, 5], [0, 3], [5, 0], [0, 7]]
+patternSet = [[1, 3, 5], [5, 3, 1]]
 
 -- Play Examples
 playPGen :: IO ()
 playPGen = do
   play $ tempo 1 (instrument Vibraphone melody)
   where
-    pitchSpace = cMajorScaleLess ++ map (+ 12) cMajorScaleLess
-    pGenExampleSet = pGen pitchSpace patternSet 40 2 (mkSMGen 300)
     melody = line $ map (note en) pGenExampleSet
+    pGenExampleSet = pGen pitchSpace patternSet 40 2 (mkSMGen 300)
+    pitchSpace = cMajorScaleLess ++ map (+ 12) cMajorScaleLess
 
 playPGen2 :: IO ()
 playPGen2 = do

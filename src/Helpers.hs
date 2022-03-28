@@ -19,8 +19,15 @@ randomize sg rs =
       plist = take n (nub (randomRs (0, n -1) sg))
    in map (rs !!) plist
 
+{-
+  choose:
+    Takes a list and an SMGen and returns a tuple of the
+    randomly selected value and the nextGen func via a
+    randomly created index value to use within the xs
+-}
 choose :: [a] -> SMGen -> (a, SMGen)
-choose [] g = error "Nothing to Choose from!"
-choose xs g =
-  let (i, g') = randomR (0, 1000) g
-   in (xs !! (i `mod` length xs), g')
+choose [] gen = error "Nothing to Choose from!"
+choose xs gen =
+  let (randIdx, genNext') = randomR (0, 1000) gen
+      safeIdx = randIdx `mod` length xs :: Int -- index within range of list
+   in (xs !! safeIdx, genNext')
