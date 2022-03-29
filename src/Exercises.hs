@@ -78,8 +78,6 @@ mkScale root [] = [absPitch root]
 mkScale root (interval : intervals) =
   absPitch root : mkScale (trans interval root) intervals
 
--- note qn root :+: mkScale (trans interval root) intervals
-
 -- Exercise 3.10 (Create a type for each mode)
 data ScaleMode
   = Ionian'
@@ -89,6 +87,7 @@ data ScaleMode
   | Mixolydian'
   | Aeolian'
   | Locrian'
+  deriving (Show, Enum)
 
 majSteps, minSteps :: [AbsPitch]
 majSteps = [2, 2, 1, 2, 2, 2, 1]
@@ -111,32 +110,3 @@ genScale p mode =
     getByMode Mixolydian' = cycleScaleNTimes 4
     getByMode Aeolian' = cycleScaleNTimes 5
     getByMode Locrian' = cycleScaleNTimes 6
-
------------------ Example Sets ------------
-
-fns0 :: [Int -> Int]
-fns0 = [(+ 10), (+ 5), (+ 20)]
-
-fns1 :: [String -> String]
-fns1 = [(++ "!"), (++ "?"), (++ "!"), (++ "?")]
-
-strs0 :: [String]
-strs0 = ["Hello", "World"]
-
-nums0 :: [Int]
-nums0 = [0, 2 .. 20]
-
-nums1 :: [IntTuple]
-nums1 = pairAndOne nums0
-
-nums2 :: [IntTuple]
-nums2 = pairAndOne [1, 2, 3]
-
-ps0 :: PitchSpace
-ps0 = [40 .. 70]
-
-pitch0 :: Pitch
-pitch0 = (C, 4)
-
-pitch1 :: Pitch
-pitch1 = (C, 6)
