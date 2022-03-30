@@ -1,4 +1,15 @@
-module ChordConstructor where
+module ChordConstructor
+  ( major,
+    minor,
+    aug,
+    dim,
+    majTriadSet,
+    minTriadSet,
+    augTriadSet,
+    dimTriadSet,
+    invertTriadSet,
+  )
+where
 
 import Euterpea
 

@@ -1,8 +1,11 @@
-module ScaleConstructor where
+module ScaleConstructor
+  ( createMajScale,
+    createMinScale,
+    createWholeToneScale,
+  )
+where
 
-import ChordConstructor
-import Euterpea
-import Helpers
+import Euterpea (AbsPitch, Music, transpose)
 import System.Random (Random (randomRs), mkStdGen)
 import System.Random.SplitMix (mkSMGen)
 

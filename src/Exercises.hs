@@ -78,7 +78,7 @@ mkScale root [] = [absPitch root]
 mkScale root (interval : intervals) =
   absPitch root : mkScale (trans interval root) intervals
 
--- Exercise 3.10 (Create a type for each mode)
+-- Exercise 3.10 (Create an Enum'd type for each mode)
 data ScaleMode
   = Ionian'
   | Dorian'
@@ -87,7 +87,7 @@ data ScaleMode
   | Mixolydian'
   | Aeolian'
   | Locrian'
-  deriving (Show, Enum)
+  deriving (Show, Enum, Read)
 
 majSteps, minSteps :: [AbsPitch]
 majSteps = [2, 2, 1, 2, 2, 2, 1]

@@ -3,7 +3,7 @@ module Examples where
 import ChordConstructor
 import Euterpea
 import Exercises
-import Helpers (choose, randomize)
+import Helpers (choose)
 import PatternGenerator (genFromPattern, randomGen)
 import ScaleConstructor (createMinScale)
 import System.Random.SplitMix (SMGen, mkSMGen)

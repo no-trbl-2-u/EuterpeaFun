@@ -1,4 +1,4 @@
-module Helpers where
+module Helpers (findInsts, choose) where
 
 import Data.List (nub)
 import Euterpea (AbsPitch)
@@ -19,12 +19,9 @@ randomize sg rs =
       plist = take n (nub (randomRs (0, n -1) sg))
    in map (rs !!) plist
 
-{-
-  choose:
-    Takes a list and an SMGen and returns a tuple of the
-    randomly selected value and the nextGen func via a
-    randomly created index value to use within the xs
--}
+-- | Takes a 'list' and an 'SMGen' and returns a tuple of the
+-- randomly selected value and the nextGen func via a
+-- randomly created index value to use within the xs
 choose :: [a] -> SMGen -> (a, SMGen)
 choose [] gen = error "Nothing to Choose from!"
 choose xs gen =
