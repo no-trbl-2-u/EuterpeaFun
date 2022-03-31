@@ -55,3 +55,16 @@ makeGetAbsPitch _ = error "Pass 'min' or 'max' ONLY"
 ---- Errors come caked into this via the closure
 minPitch = makeGetAbsPitch "min"
 maxPitch = makeGetAbsPitch "max"
+
+-- Initial Abstraction, eventually just derived from Enum and used fromEnum
+genScale :: Pitch -> ScaleMode -> [AbsPitch]
+genScale p mode =
+  mkScale p (getByMode mode)
+  where
+    getByMode Ionian' = cycleScaleNTimes 0
+    getByMode Dorian' = cycleScaleNTimes 1
+    getByMode Phrygian' = cycleScaleNTimes 2
+    getByMode Lydian' = cycleScaleNTimes 3
+    getByMode Mixolydian' = cycleScaleNTimes 4
+    getByMode Aeolian' = cycleScaleNTimes 5
+    getByMode Locrian' = cycleScaleNTimes 6

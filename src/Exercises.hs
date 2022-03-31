@@ -10,7 +10,7 @@ module Exercises where
 import Data.List (sort)
 import Euterpea
 
--- HSoM pg. 61-63
+-- HSoM pg. 61+
 
 -- Type Aliases
 type IntTuple = (Int, Int)
@@ -78,7 +78,7 @@ mkScale root [] = [absPitch root]
 mkScale root (interval : intervals) =
   absPitch root : mkScale (trans interval root) intervals
 
--- Exercise 3.10 (Create an Enum'd type for each mode)
+-- Exercise 3.11 (Create an Enum'd type for each mode)
 data ScaleMode
   = Ionian'
   | Dorian'
@@ -87,8 +87,9 @@ data ScaleMode
   | Mixolydian'
   | Aeolian'
   | Locrian'
-  deriving (Show, Enum, Read)
+  deriving (Show, Enum)
 
+-- | Example interval steps to use with cycleScaleNTimes
 majSteps, minSteps :: [AbsPitch]
 majSteps = [2, 2, 1, 2, 2, 2, 1]
 minSteps = [2, 1, 2, 2, 1, 2, 1, 1]
@@ -99,14 +100,9 @@ cycleScaleNTimes = (iterate cycleScale steps !!)
     steps = majSteps -- Swap out values here to test different step sets
     cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
 
-genScale :: Pitch -> ScaleMode -> [AbsPitch]
-genScale p mode =
-  mkScale p (getByMode mode)
-  where
-    getByMode Ionian' = cycleScaleNTimes 0
-    getByMode Dorian' = cycleScaleNTimes 1
-    getByMode Phrygian' = cycleScaleNTimes 2
-    getByMode Lydian' = cycleScaleNTimes 3
-    getByMode Mixolydian' = cycleScaleNTimes 4
-    getByMode Aeolian' = cycleScaleNTimes 5
-    getByMode Locrian' = cycleScaleNTimes 6
+-- | genScale takes a 'Pitch' and a 'ScaleMode' and returns a full
+-- ready to play scale (ie. 'PitchSpace'). It uses the enum'd index of the each Mode in the
+-- type in order to determine how many times we need to cycle the initial
+-- steps.
+genScale :: Enum a => Pitch -> a -> PitchSpace
+genScale p mode = mkScale p $ cycleScaleNTimes $ fromEnum mode

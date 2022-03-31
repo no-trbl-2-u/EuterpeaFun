@@ -36,6 +36,3 @@ createRandomScale :: Music a -> [Music a]
 createRandomScale root = createScale root randomSteps
   where
     randomSteps = randomRs (0, 12) (mkSMGen 400)
-
--- TODO: Eventually abstract this out into a new "type" that could implement:
--- data AbsPitchScale = Ionian | Dorian | ..
