@@ -94,15 +94,19 @@ majSteps, minSteps :: [AbsPitch]
 majSteps = [2, 2, 1, 2, 2, 2, 1]
 minSteps = [2, 1, 2, 2, 1, 2, 1, 1]
 
-cycleScaleNTimes :: Int -> [AbsPitch]
-cycleScaleNTimes = (iterate cycleScale steps !!)
-  where
-    steps = majSteps -- Swap out values here to test different step sets
-    cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
-
 -- | genScale takes a 'Pitch' and a 'ScaleMode' and returns a full
 -- ready to play scale (ie. 'PitchSpace'). It uses the enum'd index of the each Mode in the
 -- type in order to determine how many times we need to cycle the initial
 -- steps.
 genScale :: Enum a => Pitch -> a -> PitchSpace
-genScale p mode = mkScale p $ cycleScaleNTimes $ fromEnum mode
+genScale p = mkScale p . cycleScaleNTimes . fromEnum
+  where
+    cycleScaleNTimes = (iterate cycleScale steps !!)
+      where
+        steps = majSteps -- Swap out values here to test different step sets
+        cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
+
+-- TODO: Implement me!
+-- Exercise 3.12 (Write "Frere Jacques")
+freJacqComp :: [AbsPitch]
+freJacqComp = undefined

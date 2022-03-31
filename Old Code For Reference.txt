@@ -68,3 +68,23 @@ genScale p mode =
     getByMode Mixolydian' = cycleScaleNTimes 4
     getByMode Aeolian' = cycleScaleNTimes 5
     getByMode Locrian' = cycleScaleNTimes 6
+
+-- Determining best way to nest wheres/let
+--- 'where' is better when there's "guards" (ie. pred | resultIfTrue)
+---- This is because where scopes to the FUNCTION, not locally
+--- 'let-in' is a local scope so anything in the let is only available in "in"
+genScale' :: Enum a => Pitch -> a -> PitchSpace
+genScale' p = mkScale p . cycleScaleNTimes . fromEnum
+  where
+    cycleScaleNTimes =
+      let steps = majSteps -- Swap out values here to test different step sets
+          cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
+       in (iterate cycleScale steps !!)
+
+genScale'' :: Enum a => Pitch -> a -> PitchSpace
+genScale'' p =
+  let cycleScaleNTimes = (iterate cycleScale steps !!)
+        where
+          steps = majSteps -- Swap out values here to test different step sets
+          cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
+   in mkScale p . cycleScaleNTimes . fromEnum
