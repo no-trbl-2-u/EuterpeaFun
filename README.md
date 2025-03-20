@@ -32,3 +32,27 @@ Maybe in the future build a stack template that configures Euterpea automaticall
 - Move examples to their own modules
 - Figure out best way for Haskell to handle CONSTANTS
 - Convert to selective import/exports
+
+## Documentation:
+
+`playGenFromSet`
+
+> - Takes a pattern set (list of interval patterns)
+> - Creates a pitch space (a collection of MIDI note numbers)
+> - Generates a pattern using your genFromPattern function
+> - Plays the pattern using Euterpea's play function with the Vibraphone instrument
+
+`playGenFromSetAndMode`
+
+> - Takes a pattern set and a scale mode (from your ScaleMode type)
+> - Creates more complex music with multiple voices (melody and bassline in two octaves)
+> - Uses the specified scale mode to determine the pitch space
+> - Uses different patterns and instruments to create a richer texture
+
+`playSynthPattern`
+
+> - Connects your pattern generator with your synthesizer
+> - Generates a pattern based on a mode and pattern set
+> - Converts the MIDI notes to frequencies
+> - Plays each note in sequence using the synthesizer
+> - Shows how the two systems (pattern generator and synthesizer) can work together

@@ -2,8 +2,7 @@ module ScaleConstructor
   ( createMajScale,
     createMinScale,
     createWholeToneScale,
-  )
-where
+  ) where
 
 import Euterpea (AbsPitch, Music, transpose)
 import System.Random (Random (randomRs), mkStdGen)

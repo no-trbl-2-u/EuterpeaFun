@@ -8,10 +8,9 @@ module ChordConstructor
     augTriadSet,
     dimTriadSet,
     invertTriadSet,
-  )
-where
+  ) where
 
-import Euterpea
+import Euterpea ( transpose, Music((:=:)) )
 
 -- Type Aliases
 type ChordType = String -- "M", "m", "a", "d"

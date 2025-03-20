@@ -6,6 +6,7 @@ import Exercises
 import Helpers (choose)
 import PatternGenerator (genFromPattern, randomGen)
 import ScaleConstructor (createMinScale)
+import PatternPlayer (playGenFromSet)
 import System.Random.SplitMix (SMGen, mkSMGen)
 
 -- ------------------------ Triad Progression Examples ------------------------
@@ -31,27 +32,27 @@ playTriadExample = do
 
 -- ------------------------ Triad Set Examples ------------------------
 cMajorHarmonyExample :: IO ()
-cMajorHarmonyExample = do
-  play $ melody :=: harmony
+cMajorHarmonyExample = play $ melody :=: harmony
   where
     melody = line $ majTriadSet (c 4 qn)
     harmony = chord $ majTriadSet (c 3 qn)
 
 composedPitchSet :: IO ()
-composedPitchSet = do
-  play $ line pitchSet
+composedPitchSet = play $ line pitchSet
   where
     pitchSet = majTriadSet (c 4 qn) ++ majTriadSet (d 2 qn)
 
 bMajorInversionsExample :: IO ()
-bMajorInversionsExample = do
-  play $
-    chord root :+: chord fstInversion :+: chord sndInversion :+: chord upperRoot
-  where
-    root = majTriadSet $ b 3 hn
-    fstInversion = invertTriadSet "fst" root
-    sndInversion = invertTriadSet "snd" root
-    upperRoot = majTriadSet $ b 4 hn
+bMajorInversionsExample = play $
+    chord root :+:
+    chord fstInversion :+:
+    chord sndInversion :+:
+    chord upperRoot
+      where
+        root = majTriadSet $ b 3 hn
+        fstInversion = invertTriadSet "fst" root
+        sndInversion = invertTriadSet "snd" root
+        upperRoot = majTriadSet $ b 4 hn
 
 -- ------------------------ Scale Set Examples ------------------------
 playBMinScale :: IO ()
@@ -122,3 +123,5 @@ playRandomGen = do
   where
     melody = randomGen (map (+ 12) cMajorScaleLess) [hn, wn, hn, qn] 0 (mkSMGen 500)
     melody2 = randomGen (map (+ 24) cMajorScale) [qn, sn, qn, en] 0 (mkSMGen 600)
+
+playFromSet1 = playGenFromSet patternSet1

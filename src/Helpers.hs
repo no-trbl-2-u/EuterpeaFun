@@ -1,4 +1,7 @@
-module Helpers (findInsts, choose) where
+module Helpers (
+  findInsts,
+  choose
+) where
 
 import Data.List (nub)
 import Euterpea (AbsPitch)
@@ -28,3 +31,16 @@ choose xs gen =
   let (randIdx, genNext') = randomR (0, 1000) gen
       safeIdx = randIdx `mod` length xs :: Int -- index within range of list
    in (xs !! safeIdx, genNext')
+
+-- | Choose multiple items from a list randomly
+-- Returns a list of n random items and the updated generator
+chooseMany :: Int -> [a] -> SMGen -> ([a], SMGen)
+chooseMany n xs gen
+  | n <= 0 = ([], gen)
+  | null xs = ([], gen)
+  | otherwise = go n xs gen []
+  where
+    go 0 _ g acc = (acc, g)  -- Base case: we've chosen enough items
+    go count items g acc =
+      let (chosen, g') = choose items g
+      in go (count - 1) items g' (chosen : acc)
