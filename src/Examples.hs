@@ -5,7 +5,7 @@ import           Euterpea
 import           Exercises
 import           Helpers                (choose)
 import           PatternGenerator       (genFromPattern, randomGen)
-import           PatternPlayer          (playGenFromSet)
+import           PatternPlayer          (playGenFromSet, playGenFromSetAndMode)
 import           ScaleConstructor       (createMinScale)
 import           System.Random.SplitMix (SMGen, mkSMGen)
 
@@ -117,6 +117,7 @@ playGenFromPattern1 patternSet mode = do
     pGenExampleSet0 = genFromPattern (genScale (C, 3) mode) patternSet 30 4 (mkSMGen 300)
     pGenExampleSet1 = genFromPattern (genScale (C, 2) mode) patternSet0 30 4 (mkSMGen 400)
 
+-- WORKING!
 playRandomGen :: IO ()
 playRandomGen = do
   play $ tempo 2 (instrument Xylophone melody :=: instrument Vibraphone melody2)
@@ -124,4 +125,5 @@ playRandomGen = do
     melody = randomGen (map (+ 12) cMajorScaleLess) [hn, wn, hn, qn] 0 (mkSMGen 500)
     melody2 = randomGen (map (+ 24) cMajorScale) [qn, sn, qn, en] 0 (mkSMGen 600)
 
-playFromSet1 = playGenFromSet patternSet1
+playFromSet1 = playGenFromSet patternSet2
+playFromSetAndMode1 = playGenFromSetAndMode patternSet2 Mixolydian'
