@@ -1,13 +1,13 @@
 module Examples where
 
-import ChordConstructor
-import Euterpea
-import Exercises
-import Helpers (choose)
-import PatternGenerator (genFromPattern, randomGen)
-import ScaleConstructor (createMinScale)
-import PatternPlayer (playGenFromSet)
-import System.Random.SplitMix (SMGen, mkSMGen)
+import           ChordConstructor
+import           Euterpea
+import           Exercises
+import           Helpers                (choose)
+import           PatternGenerator       (genFromPattern, randomGen)
+import           PatternPlayer          (playGenFromSet)
+import           ScaleConstructor       (createMinScale)
+import           System.Random.SplitMix (SMGen, mkSMGen)
 
 -- ------------------------ Triad Progression Examples ------------------------
 -- Key of C Maj -> (I : IV : ii : V)

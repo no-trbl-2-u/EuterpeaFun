@@ -7,8 +7,8 @@
 -- To recreate minAbsPitch w/o eta reduction
 module Exercises where
 
-import Data.List (sort)
-import Euterpea
+import           Data.List (sort)
+import           Euterpea
 
 -- HSoM pg. 61+
 

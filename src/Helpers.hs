@@ -1,12 +1,13 @@
 module Helpers (
   findInsts,
-  choose
+  choose,
+  chooseMany
 ) where
 
-import Data.List (nub)
-import Euterpea (AbsPitch)
-import System.Random
-import System.Random.SplitMix
+import           Data.List              (nub)
+import           Euterpea               (AbsPitch)
+import           System.Random
+import           System.Random.SplitMix
 
 -- Pattern Mapping helpers
 findInsts :: [AbsPitch] -> [AbsPitch] -> [[AbsPitch]]
@@ -28,9 +29,8 @@ randomize sg rs =
 choose :: [a] -> SMGen -> (a, SMGen)
 choose [] gen = error "Nothing to Choose from!"
 choose xs gen =
-  let (randIdx, genNext') = randomR (0, 1000) gen
-      safeIdx = randIdx `mod` length xs :: Int -- index within range of list
-   in (xs !! safeIdx, genNext')
+  let (randIdx, genNext') = randomR (0, length xs - 1) gen
+   in (xs !! randIdx, genNext')
 
 -- | Choose multiple items from a list randomly
 -- Returns a list of n random items and the updated generator

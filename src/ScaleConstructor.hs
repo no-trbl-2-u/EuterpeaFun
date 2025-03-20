@@ -4,9 +4,9 @@ module ScaleConstructor
     createWholeToneScale,
   ) where
 
-import Euterpea (AbsPitch, Music, transpose)
-import System.Random (Random (randomRs), mkStdGen)
-import System.Random.SplitMix (mkSMGen)
+import           Euterpea               (AbsPitch, Music, transpose)
+import           System.Random          (Random (randomRs), mkStdGen)
+import           System.Random.SplitMix (mkSMGen)
 
 -- Step-Pattern list
 majScaleSteps :: [AbsPitch]

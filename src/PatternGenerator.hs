@@ -1,10 +1,11 @@
 module PatternGenerator where
 
 -- Leverages code and Ideas from -> https://www.youtube.com/watch?v=UVcXNhgVr9o
-import Euterpea (AbsPitch, Dur, Music ((:+:)), Volume, note, rest)
-import Helpers (choose, findInsts)
-import System.Random (Random (randomR))
-import System.Random.SplitMix (SMGen, mkSMGen)
+import           Euterpea               (AbsPitch, Dur, Music ((:+:)), Volume,
+                                         note, rest)
+import           Helpers                (choose, findInsts)
+import           System.Random          (Random (randomR))
+import           System.Random.SplitMix (SMGen, mkSMGen)
 
 type PitchSpace = [AbsPitch] -- Collection of AbsPitches
 

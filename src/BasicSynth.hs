@@ -13,7 +13,7 @@ module BasicSynth
   , startSynth
   ) where
 
-import Euterpea ( note, qn, Music, Pitch, PitchClass(C) )
+import           Euterpea (Music, Pitch, PitchClass (C), note, qn)
 -- import qualified Data.List as L
 
 -- |Different oscillator types that can be used
@@ -35,8 +35,8 @@ data Mixer = Mixer
 
 -- |Filter with configurable frequency and resonance
 data Filter = Filter
-  { filtFreq :: Double  -- Filter cutoff frequency
-  , filtRes  :: Double  -- Filter resonance (0.0-1.0)
+  { filtFreq    :: Double  -- Filter cutoff frequency
+  , filtRes     :: Double  -- Filter resonance (0.0-1.0)
   , isLFOActive :: Bool -- Whether LFO modulates filter frequency
   } deriving (Show)
 
@@ -48,13 +48,13 @@ data Reverb = Reverb
 
 -- |Complete synthesizer configuration
 data Synth = Synth
-  { osc1    :: Oscillator
-  , osc2    :: Oscillator
-  , osc3    :: Oscillator  -- LFO
-  , mixer   :: Mixer
-  , filterVal  :: Filter
-  , reverb  :: Reverb
-  , mainVol :: Double      -- Main output volume (0.0-1.0)
+  { osc1      :: Oscillator
+  , osc2      :: Oscillator
+  , osc3      :: Oscillator  -- LFO
+  , mixer     :: Mixer
+  , filterVal :: Filter
+  , reverb    :: Reverb
+  , mainVol   :: Double      -- Main output volume (0.0-1.0)
   } deriving (Show)
 
 -- |Creates an oscillator with the specified parameters
@@ -88,14 +88,14 @@ applyFilter filt lfo samples =
   let baseFreq = filtFreq filt
       res = filtRes filt
       useLFO = isLFOActive filt
-      
+
       -- This is a simplified IIR filter implementation
       applyFilterSample :: Double -> Double -> Double -> Double -> (Double, Double, Double)
       applyFilterSample input prevOut prevPrevOut cutoff =
         let norm = 1.0 / (1.0 + res * cutoff + cutoff * cutoff)
           in let newOut = (input + 2 * prevOut - prevPrevOut) * norm
              in (newOut, newOut, prevOut)
-        
+
       -- Process samples with the filter
       processSignal :: [Double] -> [Double] -> [Double]
       processSignal [] _ = []
@@ -107,10 +107,10 @@ applyFilter filt lfo samples =
             -- This would be the actual filter logic in a real implementation
             filteredSample = s * (0.5 + cutoffFreq/20000)  -- Simplified for demonstration
         in filteredSample : processSignal ss ts
-        
+
       -- Generate time points for the LFO
       timePoints = [0.0, 1.0/44100 ..] -- Assuming 44.1kHz sample rate
-      
+
   in processSignal samples (take (length samples) timePoints)
 
 -- |Applies reverb effect to the audio signal
@@ -118,18 +118,18 @@ applyReverb :: Reverb -> [Double] -> [Double]
 applyReverb rev signal =
   let mix = reverbMix rev
       decay = reverbDecay rev
-      
+
       -- Simple convolution reverb simulation
       delaySamples = round (decay * 44100) -- Convert decay time to samples
       impulseResponse = [exp (-(t/decay)) | t <- [0.0, 1.0/44100 .. decay]]
-      
+
       -- Apply impulse response (simplified convolution)
       wetSignal = convolve signal impulseResponse
-      
+
       -- Mix dry and wet signals
       mixedSignal = zipWith (\dry wet -> (1-mix)*dry + mix*wet) signal wetSignal
   in mixedSignal
-  
+
   where
     -- Simple convolution function (would be more efficient with FFT in practice)
     convolve :: [Double] -> [Double] -> [Double]
@@ -153,7 +153,7 @@ processSynthSignal synth timePoints =
       filterUnit = filterVal synth
       reverbUnit = reverb synth
       outputVolume = mainVol synth
-      
+
       -- Apply signal chain
       mixedSignal = mixSignals oscillator1 oscillator2 mixerUnit timePoints
       filteredSignal = applyFilter filterUnit lfo mixedSignal
@@ -163,7 +163,7 @@ processSynthSignal synth timePoints =
 
 -- |Converts a synth configuration to a Music Pitch that can be played
 synthToMusic :: Synth -> Music Pitch
-synthToMusic synth = 
+synthToMusic synth =
   -- This is a placeholder for converting processed samples to a Music value
   -- In a real implementation, this would use Euterpea's underlying Audio type
   let dummyMusic = note qn (C, 4) -- Just a placeholder
@@ -178,7 +178,7 @@ startSynth :: Double -> Double -> OscType -> -- Osc1 params
               Double -> Double ->            -- Reverb params
               Double ->                      -- Main volume
               IO ()
-startSynth 
+startSynth
   osc1Freq osc1Amp osc1Type
   osc2Freq osc2Amp osc2Type
   osc3Freq osc3Type
@@ -186,15 +186,15 @@ startSynth
   filtFrequency filtResonance lfoActive
   revMix revDecay
   volume = do
-    
+
     let oscillator1 = createOscillator osc1Freq osc1Amp osc1Type
         oscillator2 = createOscillator osc2Freq osc2Amp osc2Type
         lfo = createOscillator osc3Freq 1.0 osc3Type
         mixerUnit = Mixer mix1Vol mix2Vol
         filterUnit = Filter filtFrequency filtResonance lfoActive
         reverbUnit = Reverb revMix revDecay
-        
-        synth = Synth 
+
+        synth = Synth
                 oscillator1
                 oscillator2
                 lfo
@@ -202,7 +202,7 @@ startSynth
                 filterUnit
                 reverbUnit
                 volume
-    
+
     putStrLn "Starting synthesizer with the following configuration:"
     putStrLn $ "Oscillator 1: " ++ show oscillator1
     putStrLn $ "Oscillator 2: " ++ show oscillator2
@@ -211,6 +211,6 @@ startSynth
     putStrLn $ "Filter: " ++ show filterUnit
     putStrLn $ "Reverb: " ++ show reverbUnit
     putStrLn $ "Main Volume: " ++ show volume
-    
+
     -- In a real implementation, this would connect to audio output
     putStrLn "Synthesizer is now running. (This is a simulation)"
