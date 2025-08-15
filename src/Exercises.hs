@@ -7,8 +7,8 @@
 -- To recreate minAbsPitch w/o eta reduction
 module Exercises where
 
-import           Data.List (sort)
-import           Euterpea
+import Data.List (sort)
+import Euterpea
 
 -- HSoM pg. 61+
 
@@ -32,7 +32,7 @@ listLength :: [a] -> Int
 listLength = sum . map (const 1)
 
 -- Exercise 3.7 (a. Double each number in a list)
-doubleEach :: Num a => [a] -> [a]
+doubleEach :: (Num a) => [a] -> [a]
 doubleEach = map (* 2)
 
 -- Exercise 3.7 (b. Pairs each element in a list with that number and one plus that number)

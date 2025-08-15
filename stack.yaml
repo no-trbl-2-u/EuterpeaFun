@@ -43,6 +43,10 @@ allow-newer: true
 # Override default flag values for local packages and extra-deps
 flags: {}
 
+# Suppress haddock warnings and other warnings
+ghc-options:
+  "$everything": -w
+
 # Extra package databases containing global packages
 extra-package-dbs: []
 

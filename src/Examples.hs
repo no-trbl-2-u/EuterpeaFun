@@ -1,13 +1,10 @@
 module Examples where
 
-import           ChordConstructor
-import           Euterpea
-import           Exercises
-import           Helpers                (choose)
-import           PatternGenerator       (genFromPattern, randomGen)
-import           PatternPlayer          (playGenFromSet, playGenFromSetAndMode)
-import           ScaleConstructor       (createMinScale)
-import           System.Random.SplitMix (SMGen, mkSMGen)
+import ChordConstructor
+import Euterpea
+import MusicGenerator (PatternSet, createGenFromScaleAndMode, createPattern, finalImplementation)
+import Scales (ScaleMode (..), createMinScale)
+import System.Random.SplitMix (mkSMGen)
 
 -- ------------------------ Triad Progression Examples ------------------------
 -- Key of C Maj -> (I : IV : ii : V)
@@ -43,16 +40,17 @@ composedPitchSet = play $ line pitchSet
     pitchSet = majTriadSet (c 4 qn) ++ majTriadSet (d 2 qn)
 
 bMajorInversionsExample :: IO ()
-bMajorInversionsExample = play $
-    chord root :+:
-    chord fstInversion :+:
-    chord sndInversion :+:
-    chord upperRoot
-      where
-        root = majTriadSet $ b 3 hn
-        fstInversion = invertTriadSet "fst" root
-        sndInversion = invertTriadSet "snd" root
-        upperRoot = majTriadSet $ b 4 hn
+bMajorInversionsExample =
+  play $
+    chord root
+      :+: chord fstInversion
+      :+: chord sndInversion
+      :+: chord upperRoot
+  where
+    root = majTriadSet $ b 3 hn
+    fstInversion = invertTriadSet "fst" root
+    sndInversion = invertTriadSet "snd" root
+    upperRoot = majTriadSet $ b 4 hn
 
 -- ------------------------ Scale Set Examples ------------------------
 playBMinScale :: IO ()
@@ -80,50 +78,46 @@ playDMinScaleArpWithRes = do
     melUp = line . createMinScale $ root qn
     melDown = line . reverse . createMinScale $ root qn
 
--- ------------------------ Pattern Generator Examples ------------------------
-cMajorScale, cMajorScaleLess, cMajorPhrygian :: [AbsPitch]
-cMajorScale = genScale (C, 3) Ionian'
-cMajorScaleLess = [40, 44, 45, 47, 49]
-cMajorPhrygian = genScale (C, 3) Phrygian'
-
-patternSet0, patternSet1, patternSet2 :: [[AbsPitch]]
+-- ------------------------ New Pattern Generator Examples ------------------------
+-- Example pattern sets for demonstration
+patternSet0, patternSet1, patternSet2 :: PatternSet
 patternSet0 = [[1, 3, 5], [5, 3, 1], [1, 3, 7]]
 patternSet1 = [[1, 5, 3, 5], [5, 3, 5, 1], [1, 6, 5]]
 patternSet2 = [[1, 5, 3, 5], [7, 5, 7], [5, 8], [8, 7, 1], [1, 8, 7], [8, 5], [7, 3, 7]]
 
-playGenFromPattern0 :: [[AbsPitch]] -> IO ()
-playGenFromPattern0 patternSet = do
+-- | Example using the new createGenFromScaleAndMode API
+-- Creates a C Ionian generator
+genPatternWithCIonian :: PatternSet -> [Dur] -> [AbsPitch]
+genPatternWithCIonian = createGenFromScaleAndMode C Ionian
+
+-- | Simple pattern creation example
+playSimplePattern :: IO ()
+playSimplePattern = do
+  let pattern = createPattern patternSet0 [qn, hn, en]
+      melody = line $ map (note qn) (take 16 pattern)
   play $ tempo 1 (instrument Vibraphone melody)
-  where
-    melody = line $ map (note en) pGenExampleSet
-    pGenExampleSet = genFromPattern pitchSpace patternSet0 40 2 (mkSMGen 300)
-    pitchSpace = cMajorScaleLess ++ map (+ 12) cMajorScaleLess
 
-playGenFromPattern1 :: [[AbsPitch]] -> ScaleMode -> IO ()
-playGenFromPattern1 patternSet mode = do
-  play $
-    tempo
-      0.50
-      ( instrument Cello bassline0
-          :=: instrument Violin bassline1
-          :=: instrument Cello melody0
-          :=: instrument Violin melody1
-      )
-  where
-    melody0 = line $ map (note qn . (+ 12)) pGenExampleSet0
-    melody1 = line $ map (note dqn . (+ 24)) pGenExampleSet0
-    bassline0 = line $ map (note dwn) pGenExampleSet1
-    bassline1 = line $ map (note wn . (+ 12)) pGenExampleSet1
-    pGenExampleSet0 = genFromPattern (genScale (C, 3) mode) patternSet 30 4 (mkSMGen 300)
-    pGenExampleSet1 = genFromPattern (genScale (C, 2) mode) patternSet0 30 4 (mkSMGen 400)
+-- | Example using different modes
+playModalExample :: IO ()
+playModalExample = do
+  finalImplementation patternSet1 Dorian
 
--- WORKING!
-playRandomGen :: IO ()
-playRandomGen = do
-  play $ tempo 2 (instrument Xylophone melody :=: instrument Vibraphone melody2)
-  where
-    melody = randomGen (map (+ 12) cMajorScaleLess) [hn, wn, hn, qn] 0 (mkSMGen 500)
-    melody2 = randomGen (map (+ 24) cMajorScale) [qn, sn, qn, en] 0 (mkSMGen 600)
+-- | Another modal example
+playPhrygianExample :: IO ()
+playPhrygianExample = do
+  finalImplementation patternSet2 Phrygian
 
-playFromSet1 = playGenFromSet patternSet2
-playFromSetAndMode1 = playGenFromSetAndMode patternSet2 Mixolydian'
+-- | Mixolydian example
+playMixolydianExample :: IO ()
+playMixolydianExample = do
+  finalImplementation patternSet0 Mixolydian
+
+-- | Demo function to showcase the new API
+demoNewAPI :: IO ()
+demoNewAPI = do
+  putStrLn "Playing C Ionian pattern..."
+  finalImplementation patternSet0 Ionian
+  putStrLn "Playing D Dorian pattern..."
+  finalImplementation patternSet1 Dorian
+  putStrLn "Playing E Phrygian pattern..."
+  finalImplementation patternSet2 Phrygian

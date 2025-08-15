@@ -1,7 +1,8 @@
 name:                EuterpeaFun
-version:             0.1.0.0
--- synopsis:
--- description:
+version:             0.2.0.0
+synopsis:            Refactored Haskell Music Generation with Euterpea
+description:         A clean, functional approach to algorithmic music composition
+                     featuring pattern generation, modal scales, and clean abstractions.
 homepage:            https://github.com/githubuser/EuterpeaFun#readme
 license:             BSD3
 license-file:        LICENSE
@@ -22,12 +23,11 @@ executable EuterpeaFun
                      , random
                      , splitmix
   other-modules:       ChordConstructor
-                     , ScaleConstructor
+                     , Scales
                      , Examples
-                     , PatternGenerator
+                     , MusicGenerator
                      , Exercises
                      , Helpers
                      , BasicSynth
                      , SynthExamples
-                     , PatternPlayer
                      , SynthPatternIntegration
