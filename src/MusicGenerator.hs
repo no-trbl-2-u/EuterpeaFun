@@ -12,13 +12,11 @@ where
 import Euterpea
   ( AbsPitch,
     Dur,
-    InstrumentName (..),
+    InstrumentName (Cello, Violin),
     Music (..),
-    Pitch (..),
-    PitchClass (..),
+    PitchClass (C),
     Volume,
     dqn,
-    dwn,
     en,
     hn,
     instrument,
@@ -28,8 +26,6 @@ import Euterpea
     qn,
     rest,
     tempo,
-    wn,
-    (=:),
   )
 import Helpers (choose, findInsts)
 import Scales (ScaleMode (..), genScale, genScaleNotes)
@@ -79,7 +75,7 @@ randomGen pitches durs thresh g0 =
 -- | Creates a generator function from a tonic and mode
 -- Usage: createGenFromScaleAndMode C Ionian
 createGenFromScaleAndMode :: PitchClass -> ScaleMode -> (PatternSet -> [Dur] -> [AbsPitch])
-createGenFromScaleAndMode tonic mode = \patterns noteLengths ->
+createGenFromScaleAndMode tonic mode patterns noteLengths =
   let rootNote = 60 + fromEnum tonic -- Middle C = 60, adjust for other tonics
       scaleNotes = genScaleNotes rootNote mode
       -- Generate pattern with a reasonable number of notes

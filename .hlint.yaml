@@ -1,6 +1,0 @@
-# HLint configuration for EuterpeaFun project
-- arguments: []
-- no-hint: []
-- group: {name: project, enabled: true}
-- ignore: {name: "Use maximum", within: Exercises}
-- ignore: {name: "Use minimum", within: Exercises}

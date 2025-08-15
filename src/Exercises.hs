@@ -78,17 +78,6 @@ mkScale root [] = [absPitch root]
 mkScale root (interval : intervals) =
   absPitch root : mkScale (trans interval root) intervals
 
--- Exercise 3.11 (Create an Enum'd type for each mode)
-data ScaleMode
-  = Ionian'
-  | Dorian'
-  | Phrygian'
-  | Lydian'
-  | Mixolydian'
-  | Aeolian'
-  | Locrian'
-  deriving (Show, Enum)
-
 -- | Example interval steps to use with cycleScaleNTimes
 majSteps, minSteps :: [AbsPitch]
 majSteps = [2, 2, 1, 2, 2, 2, 1]

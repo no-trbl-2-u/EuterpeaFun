@@ -8,7 +8,7 @@ module Scales
   )
 where
 
-import Euterpea (AbsPitch, Music, Pitch, absPitch, pitch, trans, transpose)
+import Euterpea (AbsPitch, Music (..), Pitch, absPitch, pitch, trans, transpose)
 import System.Random (Random (randomRs), mkStdGen)
 import System.Random.SplitMix (mkSMGen)
 

@@ -2,6 +2,32 @@ module Examples where
 
 import ChordConstructor
 import Euterpea
+  ( AbsPitch,
+    Dur,
+    InstrumentName (Vibraphone),
+    Music (..),
+    Pitch,
+    PitchClass (C),
+    a,
+    b,
+    c,
+    chord,
+    d,
+    dqn,
+    e,
+    en,
+    f,
+    fs,
+    g,
+    hn,
+    instrument,
+    line,
+    note,
+    play,
+    qn,
+    tempo,
+    wn,
+  )
 import MusicGenerator (PatternSet, createGenFromScaleAndMode, createPattern, finalImplementation)
 import Scales (ScaleMode (..), createMinScale)
 import System.Random.SplitMix (mkSMGen)
