@@ -64,7 +64,7 @@ genScale :: Pitch -> ScaleMode -> PitchSpace
 genScale p mode = mkScale p (cycleScaleNTimes (fromEnum mode))
   where
     cycleScaleNTimes = (iterate cycleScale majorSteps !!)
-    cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
+    cycleScale xs = tail xs ++ [head xs]
 
 -- | Generate scale notes (AbsPitch values) for pattern generation
 genScaleNotes :: AbsPitch -> ScaleMode -> [AbsPitch]

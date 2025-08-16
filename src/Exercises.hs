@@ -87,13 +87,13 @@ minSteps = [2, 1, 2, 2, 1, 2, 1, 1]
 -- ready to play scale (ie. 'PitchSpace'). It uses the enum'd index of the each Mode in the
 -- type in order to determine how many times we need to cycle the initial
 -- steps.
-genScale :: Enum a => Pitch -> a -> PitchSpace
+genScale :: (Enum a) => Pitch -> a -> PitchSpace
 genScale p = mkScale p . cycleScaleNTimes . fromEnum
   where
     cycleScaleNTimes = (iterate cycleScale steps !!)
       where
         steps = majSteps -- Swap out values here to test different step sets
-        cycleScale xs = [head $ tail xs] ++ tail (tail xs) ++ [head xs]
+        cycleScale xs = tail xs ++ [head xs] -- cycleScale is a function that takes a list and returns a list with the first element moved to the end of the list
 
 -- TODO: Implement me!
 -- Exercise 3.12 (Write "Frere Jacques")
