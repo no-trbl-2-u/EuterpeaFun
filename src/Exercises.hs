@@ -8,7 +8,7 @@
 module Exercises where
 
 import Data.List (sort)
-import Euterpea
+import Euterpea (AbsPitch, Music (..), Pitch, absPitch, line, note, pitch, qn, trans, transpose)
 
 -- HSoM pg. 61+
 
